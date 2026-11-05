@@ -25,7 +25,7 @@
     <section class="workspace tab-panel active" id="assistant-panel">
       <header class="topbar"><div><h1>Sorting assistant</h1><p>Show me an item and I’ll find the right German disposal route.</p></div><span class="mode-pill"><span></span> Local AI ready</span></header>
       <div class="conversation" id="conversation" aria-live="polite">
-        <div class="message assistant-message welcome-message"><div class="avatar">S</div><div class="bubble welcome-bubble"><span class="eyebrow">SMART SORTING</span><h2>What would you like to recycle?</h2><p>Take a photo or upload one. I’ll identify it with your trained model and show the correct bin. If the model is unsure, Codex takes a closer look.</p><div class="quick-actions">
+        <div class="message assistant-message welcome-message"><div class="avatar">S</div><div class="bubble welcome-bubble"><span class="eyebrow">SMART SORTING</span><h2>What would you like to recycle?</h2><p>Take a photo or upload one. I’ll identify it with your trained model and show the correct bin. If the model is unsure, Sortly AI takes a closer look.</p><div class="quick-actions">
           <button class="quick-card" id="welcome-camera"><span class="quick-icon camera-icon"><svg viewBox="0 0 24 24"><path d="M4 7.5h3l1.5-2h7l1.5 2h3a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9.5a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="4"/></svg></span><span><strong>Take a photo</strong><small>Use your camera</small></span></button>
           <button class="quick-card" id="welcome-upload"><span class="quick-icon upload-icon"><svg viewBox="0 0 24 24"><path d="M12 16V3m0 0 5 5m-5-5L7 8"/><path d="M4 14v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/></svg></span><span><strong>Upload image</strong><small>JPG, PNG or WEBP</small></span></button>
         </div></div></div>
@@ -39,13 +39,13 @@
     </section>
 
     <section class="workspace tab-panel" id="config-panel">
-      <header class="topbar"><div><h1>Configuration</h1><p>Choose when your local model should ask Codex for a second opinion.</p></div><span class="saved-pill" id="saved-pill">Saved on this device</span></header>
+      <header class="topbar"><div><h1>Configuration</h1><p>Choose when your local model should ask Sortly AI for a second opinion.</p></div><span class="saved-pill" id="saved-pill">Saved on this device</span></header>
       <div class="settings-content">
         <section class="settings-card threshold-card">
-          <div class="settings-title-row"><div class="settings-icon"><svg viewBox="0 0 24 24"><path d="M4 17V7m8 14V3m8 14V7"/><path d="M1 17h6m2-14h6m2 14h6"/></svg></div><div><h2>Confidence threshold</h2><p>Controls when Codex reviews an image.</p></div><output id="threshold-output">{{ threshold }}%</output></div>
+          <div class="settings-title-row"><div class="settings-icon"><svg viewBox="0 0 24 24"><path d="M4 17V7m8 14V3m8 14V7"/><path d="M1 17h6m2-14h6m2 14h6"/></svg></div><div><h2>Confidence threshold</h2><p>Controls when Sortly AI reviews an image.</p></div><output id="threshold-output">{{ threshold }}%</output></div>
           <input id="threshold-slider" type="range" min="10" max="95" step="1" value="{{ threshold }}">
-          <div class="range-labels"><span>10% · Ask Codex less</span><span>95% · Ask Codex more</span></div>
-          <div class="decision-preview"><div class="decision local-decision"><span class="decision-icon">Y</span><div><strong>At or above <b id="local-value">{{ threshold }}%</b></strong><small>Use YOLO prediction + built-in German bin rules</small></div></div><div class="decision codex-decision"><span class="decision-icon">C</span><div><strong>Below <b id="codex-value">{{ threshold }}%</b></strong><small>Send the image and prediction to Codex for review</small></div></div></div>
+          <div class="range-labels"><span>10% · Ask AI less</span><span>95% · Ask AI more</span></div>
+          <div class="decision-preview"><div class="decision local-decision"><span class="decision-icon">Y</span><div><strong>At or above <b id="local-value">{{ threshold }}%</b></strong><small>Use YOLO prediction + built-in German bin rules</small></div></div><div class="decision codex-decision"><span class="decision-icon">AI</span><div><strong>Below <b id="codex-value">{{ threshold }}%</b></strong><small>Send the image and prediction to Sortly AI for review</small></div></div></div>
         </section>
         <section class="settings-card tunnel-card">
           <div class="settings-title-row"><div class="settings-icon tunnel-icon"><svg viewBox="0 0 24 24"><path d="M8 17H6a4 4 0 1 1 .7-7.9A6 6 0 0 1 18.2 8 4.5 4.5 0 1 1 19.5 17H16"/><path d="m9 14 3-3 3 3m-3-3v10"/></svg></div><div><h2>Go live</h2><p>Create a temporary Cloudflare URL for this application.</p></div><span class="tunnel-status stopped" id="tunnel-status"><i></i><b>Offline</b></span></div>

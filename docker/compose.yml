@@ -8,8 +8,8 @@ services:
       - "8501:8501"
     environment:
       LLM_API_KEY: ${LLM_API_KEY}
-      LLM_MODEL: ${LLM_MODEL:-gpt-4o-mini}
-      LLM_BASE_URL: ${LLM_BASE_URL:-https://api.openai.com/v1}
+      LLM_MODEL: ${LLM_MODEL:-mistralai-mistral-small-4}
+      LLM_BASE_URL: ${LLM_BASE_URL:-https://chat.kiconnect.nrw/api/v1}
     volumes:
       - ../models:/app/models:ro
     restart: unless-stopped

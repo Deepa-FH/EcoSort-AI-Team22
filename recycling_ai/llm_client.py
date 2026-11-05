@@ -1,28 +1,52 @@
 from __future__ import annotations
 
+import base64
+import mimetypes
 import os
-import json
-from urllib import error, request
+from pathlib import Path
+
+from openai import OpenAI
+
 from .exceptions import LLMServiceError, MissingAPIKeyError
 
 
 class OpenAICompatibleClient:
-    def __init__(self, api_key: str | None, model: str, base_url: str, timeout: int = 30):
+    """KIconnect/OpenAI-compatible multimodal chat client."""
+
+    def __init__(self, api_key: str | None, model: str, base_url: str, timeout: int = 60):
         self.api_key = api_key or os.getenv("LLM_API_KEY")
         self.model = model
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
 
-    def ask(self, prompt: str) -> str:
+    @staticmethod
+    def _image_content(image_path: Path) -> dict:
+        mime_type = mimetypes.guess_type(image_path.name)[0] or "image/jpeg"
+        encoded = base64.b64encode(image_path.read_bytes()).decode("utf-8")
+        return {
+            "type": "image_url",
+            "image_url": {"url": f"data:{mime_type};base64,{encoded}"},
+        }
+
+    def ask(self, prompt: str, image_path: Path | None = None) -> str:
         if not self.api_key:
             raise MissingAPIKeyError("No LLM API key was supplied. Use --api-key or LLM_API_KEY.")
+
+        content: list[dict] = [{"type": "text", "text": prompt}]
+        if image_path is not None and image_path.is_file():
+            content.append(self._image_content(image_path))
+
         try:
-            payload = json.dumps({"model": self.model, "messages": [{"role": "user", "content": prompt}]}).encode("utf-8")
-            http_request = request.Request(f"{self.base_url}/chat/completions", data=payload, headers={"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}, method="POST")
-            with request.urlopen(http_request, timeout=self.timeout) as response:
-                content = json.loads(response.read().decode("utf-8"))["choices"][0]["message"]["content"]
-            if not content:
-                raise LLMServiceError("The LLM returned an empty answer.")
-            return str(content).strip()
-        except (error.URLError, error.HTTPError, KeyError, IndexError, TypeError, ValueError, TimeoutError) as error:
-            raise LLMServiceError("The LLM service could not answer the request.") from error
+            client = OpenAI(api_key=self.api_key, base_url=self.base_url, timeout=self.timeout)
+            response = client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "user", "content": content}],
+            )
+            answer = response.choices[0].message.content
+            if not answer:
+                raise LLMServiceError("The AI service returned an empty answer.")
+            return str(answer).strip()
+        except LLMServiceError:
+            raise
+        except Exception as exc:
+            raise LLMServiceError(f"The AI service could not answer: {exc}") from exc

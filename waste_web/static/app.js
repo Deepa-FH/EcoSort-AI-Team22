@@ -87,7 +87,7 @@ function addError(message) {
   scrollToLatest();
 }
 
-function addAssistantText(text, badge = "Codex answer") {
+function addAssistantText(text, badge = "Sortly AI answer") {
   const node = document.createElement("div");
   node.className = "message assistant-message";
   node.innerHTML = `<div class="avatar">S</div><div class="bubble"><span class="eyebrow">${escapeHtml(badge)}</span><p class="codex-answer"></p></div>`;
@@ -105,7 +105,7 @@ function binFromAnswer(answer) {
   if (/special|hazard|battery|collection point|schadstoff/.test(text)) return { color: "Special collection", hex: "#D94B4B", bin: "Special waste collection point" };
   if (/textile|clothing|altkleider/.test(text)) return { color: "Textile collection", hex: "#D9822B", bin: "Reuse or textile collection" };
   if (/residual|restmüll|general waste|grey|black bin/.test(text)) return { color: "Grey / black", hex: "#626A66", bin: "Residual waste bin" };
-  return { color: "Check guidance", hex: "#7160B7", bin: "Follow the Codex recommendation" };
+  return { color: "Check guidance", hex: "#7160B7", bin: "Follow the Sortly AI recommendation" };
 }
 
 function resultCard(data) {
@@ -117,7 +117,7 @@ function resultCard(data) {
   const title = top ? top.label.replaceAll("_", " ") : "No clear object";
   const subtitle = data.needs_review ? `Below your ${Math.round(data.threshold * 100)}% threshold` : "Confident local prediction";
   node.innerHTML = `<div class="avatar">S</div><div class="bubble result-card">
-    <div class="result-top"><div class="confidence-ring" style="--score:${confidence};--ring:${data.needs_review ? "#7160b7" : "#278556"}"><strong>${confidence}%</strong></div><div class="prediction-copy"><small>MODEL PREDICTION</small><h3>${escapeHtml(title)}</h3><p>${escapeHtml(subtitle)}</p></div><span class="source-badge ${data.needs_review ? "codex" : ""}">${data.needs_review ? "Reviewing with Codex" : "Analyzed locally"}</span></div>
+    <div class="result-top"><div class="confidence-ring" style="--score:${confidence};--ring:${data.needs_review ? "#7160b7" : "#278556"}"><strong>${confidence}%</strong></div><div class="prediction-copy"><small>MODEL PREDICTION</small><h3>${escapeHtml(title)}</h3><p>${escapeHtml(subtitle)}</p></div><span class="source-badge ${data.needs_review ? "codex" : ""}">${data.needs_review ? "Reviewing with Sortly AI" : "Analyzed locally"}</span></div>
     <div class="route-slot"></div>
   </div>`;
   conversation.appendChild(node);
@@ -125,7 +125,7 @@ function resultCard(data) {
   if (!data.needs_review && route) {
     slot.innerHTML = routeMarkup(route, "German disposal route");
   } else {
-    slot.innerHTML = `<div class="route-panel"><div class="bin-visual" style="--bin:#7160B7"><div class="large-bin"></div><small>Expert review</small></div><div class="route-copy"><span class="route-label">CODEX IS CHECKING</span><h3>Taking a closer look</h3><p>The local model is not confident enough, so the photo and its prediction were passed to Codex.</p><div class="thinking-dots"><i></i><i></i><i></i></div></div></div>`;
+    slot.innerHTML = `<div class="route-panel"><div class="bin-visual" style="--bin:#7160B7"><div class="large-bin"></div><small>Expert review</small></div><div class="route-copy"><span class="route-label">SORTLY AI IS CHECKING</span><h3>Taking a closer look</h3><p>The local model is not confident enough, so the photo and its prediction were passed to Sortly AI.</p><div class="thinking-dots"><i></i><i></i><i></i></div></div></div>`;
   }
   scrollToLatest();
   return { node, slot };
@@ -147,15 +147,15 @@ async function pollReview(jobId, slot, cardNode) {
     const job = await response.json();
     if (job.status === "done") {
       const route = binFromAnswer(job.answer);
-      slot.innerHTML = routeMarkup(route, "Codex recommendation", job.answer);
+      slot.innerHTML = routeMarkup(route, "Sortly AI recommendation", job.answer);
       const badge = cardNode.querySelector(".source-badge");
-      badge.textContent = "Reviewed by Codex";
+      badge.textContent = "Reviewed by Sortly AI";
       bindResultActions(slot);
       scrollToLatest();
       return;
     }
     if (job.status === "error" || !response.ok) {
-      slot.innerHTML = `<div class="route-panel"><div class="route-copy"><span class="route-label">REVIEW FAILED</span><h3>Codex could not complete the review</h3><p>${escapeHtml(job.message || job.error || "Please try again.")}</p></div></div>`;
+      slot.innerHTML = `<div class="route-panel"><div class="route-copy"><span class="route-label">REVIEW FAILED</span><h3>Sortly AI could not complete the review</h3><p>${escapeHtml(job.message || job.error || "Please try again.")}</p></div></div>`;
       return;
     }
   }
@@ -242,7 +242,7 @@ async function sendChat() {
   addUserText(message);
   chatInput.value = "";
   sendButton.disabled = true;
-  const thinking = addThinking("Checking German recycling guidance with Codex");
+  const thinking = addThinking("Checking German recycling guidance with Sortly AI");
   try {
     const response = await fetch("/api/chat", {
       method: "POST", headers: { "Content-Type": "application/json" },
@@ -250,7 +250,7 @@ async function sendChat() {
     });
     const data = await response.json();
     thinking.remove();
-    if (!response.ok) throw new Error(data.error || "Codex could not answer.");
+    if (!response.ok) throw new Error(data.error || "Sortly AI could not answer.");
     addAssistantText(data.answer);
   } catch (error) {
     thinking.remove();

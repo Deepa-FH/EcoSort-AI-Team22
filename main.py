@@ -77,8 +77,8 @@ tunnel_state = {
 }
 llm_client = OpenAICompatibleClient(
     api_key=os.environ.get("LLM_API_KEY"),
-    model=os.environ.get("LLM_MODEL", "gpt-4o-mini"),
-    base_url=os.environ.get("LLM_BASE_URL", "https://api.openai.com/v1"),
+    model=os.environ.get("LLM_MODEL", "mistralai-mistral-small-4"),
+    base_url=os.environ.get("LLM_BASE_URL", "https://chat.kiconnect.nrw/api/v1"),
 )
 
 
@@ -295,7 +295,7 @@ def get_model():
 
 def run_llm(prompt: str, image_path: Path | None = None) -> tuple[str, int]:
     """Ask the configured API LLM and return an approximate usage count."""
-    answer = llm_client.ask(prompt)
+    answer = llm_client.ask(prompt, image_path)
     estimated_tokens = max(1, (len(prompt) + len(answer)) // 4)
     return answer, estimated_tokens
 
@@ -579,8 +579,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Run the EcoSort AI waste-sorting dashboard.")
     parser.add_argument("--api-key", default=os.environ.get("LLM_API_KEY"), help="LLM API key; prefer LLM_API_KEY")
     parser.add_argument("--model", type=Path, default=MODEL_PATH)
-    parser.add_argument("--llm-model", default=os.environ.get("LLM_MODEL", "gpt-4o-mini"))
-    parser.add_argument("--llm-base-url", default=os.environ.get("LLM_BASE_URL", "https://api.openai.com/v1"))
+    parser.add_argument("--llm-model", default=os.environ.get("LLM_MODEL", "mistralai-mistral-small-4"))
+    parser.add_argument("--llm-base-url", default=os.environ.get("LLM_BASE_URL", "https://chat.kiconnect.nrw/api/v1"))
     parser.add_argument("--host", default=os.environ.get("SORTLY_HOST", "127.0.0.1"))
     parser.add_argument("--port", type=int, default=APP_PORT)
     parser.add_argument("--no-browser", action="store_true")
