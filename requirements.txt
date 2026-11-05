@@ -1,0 +1,5 @@
+Flask>=3.1,<4
+Pillow>=11
+ultralytics==8.4.174
+openai>=1.60,<3
+pytest>=8
