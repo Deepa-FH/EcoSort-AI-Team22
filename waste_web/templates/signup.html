@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Create account — Sortly</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="login-page">
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <main class="login-shell signup-shell">
+    <section class="login-brand-panel"><div class="login-brand"><span class="brand-mark">♻</span><strong>Sortly</strong></div><div><span class="eyebrow">INVITED ACCESS</span><h1>Join the sorting team.</h1><p>Choose a standard account, municipality workspace, or administrator account.</p></div></section>
+    <section class="login-form-panel">
+      <form class="login-card" method="post" action="{{ url_for('signup') }}">
+        <span class="secure-badge"><i></i> Invitation code required</span>
+        <h2>Create account</h2><p>Use the shared invitation code provided by your project team.</p>
+        {% if error %}<div class="login-error">{{ error }}</div>{% endif %}
+        <label for="username">Username</label><div class="login-input"><input id="username" name="username" required autofocus></div>
+        <label for="password">Password</label><div class="login-input"><input id="password" name="password" type="password" minlength="6" required></div>
+        <label for="role">Account type</label><div class="login-input"><select id="role" name="role"><option value="user">Normal user</option><option value="municipality">Municipality worker</option><option value="admin">Administrator</option></select></div>
+        <label for="signup_code">Invitation code</label><div class="login-input"><input id="signup_code" name="signup_code" required></div>
+        <button class="login-button" type="submit">Create account <span>→</span></button>
+        <a class="login-link" href="{{ url_for('login') }}">Back to sign in</a>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
