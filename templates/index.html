@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EcoSort AI - Scan Database</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header><div><span class="logo">E</span><div><h1>EcoSort AI</h1><p>Flask + MySQL scan database</p></div></div><span id="status">Connecting...</span></header>
+  <main>
+    <section class="hero">
+      <div><p class="eyebrow">HOME TASK 3</p><h2>Waste recognition records</h2><p>Create, read, update and delete scan results through a REST API backed by MySQL.</p></div>
+      <div class="stats"><strong id="total">0</strong><span>stored scans</span><strong id="average">0%</strong><span>average confidence</span></div>
+    </section>
+    <section class="panel">
+      <h3 id="form-title">Add a scan</h3>
+      <form id="scan-form">
+        <input type="hidden" id="scan-id">
+        <label>Item name<input id="item_name" required placeholder="Water bottle"></label>
+        <label>Material<select id="material_category" required><option>Plastic</option><option>Glass</option><option>Metal</option><option>Paper</option><option>Organic waste</option><option>Textile</option><option>Residual waste</option></select></label>
+        <label>Confidence<input id="confidence" type="number" min="0" max="1" step="0.01" value="0.90" required></label>
+        <label>Disposal bin<input id="disposal_bin" required placeholder="Yellow bin"></label>
+        <label>City<input id="city" required value="Dortmund"></label>
+        <label class="wide">Notes<input id="notes" placeholder="Optional information"></label>
+        <div class="actions"><button type="submit">Save record</button><button type="button" class="secondary" id="cancel" hidden>Cancel edit</button></div>
+      </form>
+      <p class="message" id="message"></p>
+    </section>
+    <section class="panel">
+      <div class="section-head"><div><p class="eyebrow">MYSQL OUTPUT</p><h3>Scan history</h3></div><button class="secondary" onclick="loadAll()">Refresh</button></div>
+      <div class="table-wrap"><table><thead><tr><th>ID</th><th>Item</th><th>Material</th><th>Confidence</th><th>Bin</th><th>City</th><th>Actions</th></tr></thead><tbody id="rows"></tbody></table></div>
+    </section>
+  </main>
+<script>
+const fields = ['item_name','material_category','confidence','disposal_bin','city','notes'];
+const form = document.getElementById('scan-form');
+const message = document.getElementById('message');
+let records = [];
+function escapeHtml(value){const d=document.createElement('div');d.textContent=value??'';return d.innerHTML;}
+async function api(path, options={}){const response=await fetch(path,{headers:{'Content-Type':'application/json'},...options});if(response.status===204)return null;const data=await response.json();if(!response.ok)throw new Error(data.error||'Request failed');return data;}
+async function loadAll(){try{records=await api('/api/scans');document.getElementById('rows').innerHTML=records.map(r=>`<tr><td>${r.id}</td><td>${escapeHtml(r.item_name)}</td><td><span class="pill">${escapeHtml(r.material_category)}</span></td><td>${(Number(r.confidence)*100).toFixed(0)}%</td><td>${escapeHtml(r.disposal_bin)}</td><td>${escapeHtml(r.city)}</td><td><button class="small" onclick="editRecord(${r.id})">Edit</button> <button class="small danger" onclick="removeRecord(${r.id})">Delete</button></td></tr>`).join('');const stats=await api('/api/stats');document.getElementById('total').textContent=stats.summary.total;document.getElementById('average').textContent=`${(Number(stats.summary.average_confidence||0)*100).toFixed(0)}%`;document.getElementById('status').textContent='MySQL connected';}catch(error){document.getElementById('status').textContent='Connection error';show(error.message,true);}}
+function payload(){return Object.fromEntries(fields.map(name=>[name,document.getElementById(name).value]));}
+form.addEventListener('submit',async event=>{event.preventDefault();const id=document.getElementById('scan-id').value;try{await api(id?`/api/scans/${id}`:'/api/scans',{method:id?'PUT':'POST',body:JSON.stringify(payload())});resetForm();show(id?'Record updated':'Record created');await loadAll();}catch(error){show(error.message,true);}});
+function editRecord(id){const r=records.find(x=>x.id===id);document.getElementById('scan-id').value=id;fields.forEach(name=>document.getElementById(name).value=r[name]??'');document.getElementById('form-title').textContent=`Edit scan #${id}`;document.getElementById('cancel').hidden=false;window.scrollTo({top:0,behavior:'smooth'});}
+async function removeRecord(id){if(!confirm(`Delete scan #${id}?`))return;try{await api(`/api/scans/${id}`,{method:'DELETE'});show('Record deleted');await loadAll();}catch(error){show(error.message,true);}}
+function resetForm(){form.reset();document.getElementById('scan-id').value='';document.getElementById('city').value='Dortmund';document.getElementById('confidence').value='0.90';document.getElementById('form-title').textContent='Add a scan';document.getElementById('cancel').hidden=true;}
+document.getElementById('cancel').onclick=resetForm;
+function show(text,error=false){message.textContent=text;message.className=`message ${error?'error':'ok'}`;}
+loadAll();
+</script>
+</body></html>

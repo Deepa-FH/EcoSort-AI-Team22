@@ -1,38 +1,95 @@
-import os
-from urllib.parse import urlparse
-from flask import Flask, jsonify, request
-from datetime import datetime
+"""EcoSort AI Home Task 3: Flask REST API with a MySQL access layer."""
+from __future__ import annotations
 
-app=Flask(__name__)
-records=[]
+import time
 
-def mysql_connection():
-    """Return a MySQL connection when DATABASE_URL is configured; otherwise None."""
-    url=os.getenv("DATABASE_URL", "")
-    if not url.startswith("mysql"):
-        return None
-    try:
-        import mysql.connector
-        parsed=urlparse(url)
-        return mysql.connector.connect(host=parsed.hostname, port=parsed.port or 3306, user=parsed.username, password=parsed.password, database=parsed.path.lstrip("/"))
-    except Exception as error:
-        print(f"[Database] MySQL unavailable, using memory fallback: {error}")
-        return None
+from flask import Flask, jsonify, render_template, request
+from mysql.connector import Error as MySQLError
 
-@app.get("/")
-def index(): return jsonify(application="Waste records sample", records=len(records))
+from config import Config
+from database import MySQLDatabase
+from repositories import ScanRepository
+from services import ScanService, ValidationError
 
-@app.post("/records")
-def create_record():
-    data=request.get_json(silent=True) or {}
-    if not data.get("material"): return jsonify(error="material is required"),400
-    record={"material":data["material"],"confidence":float(data.get("confidence",0)),"advice":data.get("advice",""),"created_at":datetime.now().isoformat()}
-    connection=mysql_connection()
-    if connection:
-        cursor=connection.cursor(); cursor.execute("INSERT INTO waste_records (material, confidence, advice) VALUES (%s, %s, %s)", (record["material"], record["confidence"], record["advice"])); connection.commit(); cursor.close(); connection.close()
-    records.append(record); return jsonify(record),201
 
-@app.get("/records")
-def list_records(): return jsonify(records)
+def create_app(service=None, database=None) -> Flask:
+    app = Flask(__name__)
+    if service is None:
+        db_config = {
+            "host": Config.MYSQL_HOST,
+            "port": Config.MYSQL_PORT,
+            "database": Config.MYSQL_DATABASE,
+            "user": Config.MYSQL_USER,
+            "password": Config.MYSQL_PASSWORD,
+        }
+        database = database or MySQLDatabase(db_config)
+        service = ScanService(ScanRepository(database))
+    app.extensions["scan_service"] = service
+    app.extensions["mysql_database"] = database
 
-if __name__=="__main__": app.run(debug=False)
+    @app.get("/")
+    def index():
+        return render_template("index.html")
+
+    @app.get("/health")
+    def health():
+        if app.extensions["mysql_database"] is not None:
+            app.extensions["mysql_database"].ping()
+        return jsonify(status="healthy", application="EcoSort AI Scan Database")
+
+    @app.get("/api/scans")
+    def list_scans():
+        return jsonify(service.list_scans())
+
+    @app.get("/api/scans/<int:scan_id>")
+    def get_scan(scan_id: int):
+        record = service.get_scan(scan_id)
+        return (jsonify(record), 200) if record else (jsonify(error="Scan not found"), 404)
+
+    @app.post("/api/scans")
+    def create_scan():
+        record = service.create_scan(request.get_json(silent=True) or {})
+        return jsonify(record), 201
+
+    @app.put("/api/scans/<int:scan_id>")
+    def update_scan(scan_id: int):
+        record = service.update_scan(scan_id, request.get_json(silent=True) or {})
+        return (jsonify(record), 200) if record else (jsonify(error="Scan not found"), 404)
+
+    @app.delete("/api/scans/<int:scan_id>")
+    def delete_scan(scan_id: int):
+        return ("", 204) if service.delete_scan(scan_id) else (jsonify(error="Scan not found"), 404)
+
+    @app.get("/api/stats")
+    def statistics():
+        return jsonify(service.statistics())
+
+    @app.errorhandler(ValidationError)
+    def validation_error(error):
+        return jsonify(error=str(error)), 400
+
+    @app.errorhandler(MySQLError)
+    def database_error(error):
+        app.logger.exception("MySQL operation failed")
+        return jsonify(error="Database operation failed", detail=str(error)), 503
+
+    return app
+
+
+def create_app_with_retry(attempts: int = 20, delay: float = 2.0) -> Flask:
+    last_error = None
+    for attempt in range(1, attempts + 1):
+        try:
+            application = create_app()
+            application.extensions["mysql_database"].ping()
+            return application
+        except MySQLError as exc:
+            last_error = exc
+            print(f"Waiting for MySQL ({attempt}/{attempts}): {exc}")
+            time.sleep(delay)
+    raise RuntimeError(f"MySQL did not become ready: {last_error}")
+
+
+if __name__ == "__main__":
+    app = create_app_with_retry()
+    app.run(host=Config.APP_HOST, port=Config.APP_PORT, debug=Config.DEBUG)
