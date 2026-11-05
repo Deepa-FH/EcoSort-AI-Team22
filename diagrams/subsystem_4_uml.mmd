@@ -1,0 +1,8 @@
+classDiagram
+class RequestValidator { -str required_field +initialize() +validate(filename,content) +get_required_field() +set_required_field(value) }
+class PredictionController { -loader -validator -pipeline -detector -assistant +initialize() +classify(filename,content) +get_detector() +set_detector(value) }
+class DashboardService { -int scan_count -dict category_counts +initialize() +record_scan(category) +summary() +get_scan_count() +set_scan_count(value) }
+class ApplicationCoordinator { -RequestValidator request_validator -PredictionController controller -DashboardService dashboard +initialize() +handle_demo_request(filename,content) +get_dashboard() +set_dashboard(value) }
+ApplicationCoordinator *-- RequestValidator
+ApplicationCoordinator *-- PredictionController
+ApplicationCoordinator *-- DashboardService

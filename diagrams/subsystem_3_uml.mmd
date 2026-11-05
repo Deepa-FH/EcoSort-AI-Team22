@@ -1,0 +1,10 @@
+classDiagram
+class RecyclingRule { -str category -str bin_name -str instruction +initialize() +get_category() +set_category(value) }
+class RecyclingRuleEngine { -str city -dict rules +initialize(rules) +find_rule(category) +get_city() +set_city(value) }
+class PromptBuilder { -str language -str system_message +initialize() +build(category,city,question) +get_language() +set_language(value) }
+class OpenAICompatibleClient { -str model -str base_url -str api_key +initialize(api_key,sender) +ask(prompt) +get_model() +set_model(value) }
+class WasteAssistant { -RecyclingRuleEngine rule_engine -PromptBuilder prompt_builder +initialize() +get_guidance(category) +get_rule_engine() +set_rule_engine(value) }
+RecyclingRuleEngine *-- RecyclingRule
+WasteAssistant *-- RecyclingRuleEngine
+WasteAssistant *-- PromptBuilder
+WasteAssistant ..> OpenAICompatibleClient

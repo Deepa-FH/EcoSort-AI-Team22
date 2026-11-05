@@ -1,0 +1,21 @@
+classDiagram
+direction LR
+class ImageLoader
+class ImageValidator
+class PreprocessingPipeline
+class WasteDetector
+class ConfidenceFilter
+class RecyclingRuleEngine
+class WasteAssistant
+class PredictionController
+class DashboardService
+class ApplicationCoordinator
+PreprocessingPipeline --> ImageLoader
+PreprocessingPipeline --> ImageValidator
+WasteDetector *-- ConfidenceFilter
+WasteAssistant *-- RecyclingRuleEngine
+PredictionController --> PreprocessingPipeline
+PredictionController --> WasteDetector
+PredictionController --> WasteAssistant
+ApplicationCoordinator *-- PredictionController
+ApplicationCoordinator *-- DashboardService

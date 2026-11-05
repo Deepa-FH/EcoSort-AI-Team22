@@ -1,0 +1,9 @@
+classDiagram
+class ModelLoader { -str model_path -object model +initialize(factory) +get_model_path() +set_model_path(value) }
+class BoundingBox { +float x +float y +float width +float height +initialize() +get_area() +set_size(w,h) }
+class DetectionResult { -str label -float confidence -str model_version +initialize() +get_label() +set_label(value) +get_confidence() +set_confidence(value) }
+class ConfidenceFilter { -float threshold +initialize() +accept(result) +get_threshold() +set_threshold(value) }
+class WasteDetector { -str model_name -callable predictor +initialize(predictor) +predict(image) +get_model_name() +set_model_name(value) }
+DetectionResult o-- BoundingBox
+WasteDetector *-- ConfidenceFilter
+WasteDetector --> DetectionResult

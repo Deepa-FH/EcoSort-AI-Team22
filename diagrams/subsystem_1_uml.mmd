@@ -1,0 +1,7 @@
+classDiagram
+class ImageLoader { -set allowed_extensions +initialize() +load(filename, content) +get_allowed_extensions() +set_allowed_extensions(value) }
+class ImageValidator { -float max_size_mb +initialize() +validate(content) +get_max_size_mb() +set_max_size_mb(value) }
+class ImagePreprocessor { -tuple target_size -bool normalize +initialize() +process(content) +get_target_size() +set_target_size(value) }
+class PreprocessingPipeline { -ImagePreprocessor processor +initialize() +run(content) +get_processor() +set_processor(value) }
+class DatasetStatistics { -dict class_counts +initialize() +add_sample(label) +get_class_counts() +set_class_counts(value) }
+PreprocessingPipeline *-- ImagePreprocessor
