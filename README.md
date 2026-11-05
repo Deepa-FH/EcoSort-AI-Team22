@@ -1,4 +1,4 @@
-#AI-Powered Waste Sorting & Recycling Assistant
+# AI-Powered Waste Sorting & Recycling Assistant
 
 # EcoSort AI — Home Assignment 1
 
