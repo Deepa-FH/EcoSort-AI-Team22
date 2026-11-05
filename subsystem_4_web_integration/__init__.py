@@ -1,6 +1,6 @@
 """Subsystem 4: Vijay Kathiresan — Web App, Dashboard and Integration."""
-from .request_validator import RequestValidator
-from .prediction_controller import PredictionController
+from .waste_sorting_web_app import WasteSortingWebApp
+from .integration_controller import IntegrationController
 from .dashboard_service import DashboardService
-from .application_coordinator import ApplicationCoordinator
-__all__ = ["RequestValidator", "PredictionController", "DashboardService", "ApplicationCoordinator"]
+from .waste_repository import WasteRepository
+__all__ = ["WasteSortingWebApp", "IntegrationController", "DashboardService", "WasteRepository"]

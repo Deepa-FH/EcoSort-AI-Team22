@@ -1,7 +1,8 @@
 classDiagram
-class ImageLoader { -set allowed_extensions +initialize() +load(filename, content) +get_allowed_extensions() +set_allowed_extensions(value) }
-class ImageValidator { -float max_size_mb +initialize() +validate(content) +get_max_size_mb() +set_max_size_mb(value) }
-class ImagePreprocessor { -tuple target_size -bool normalize +initialize() +process(content) +get_target_size() +set_target_size(value) }
-class PreprocessingPipeline { -ImagePreprocessor processor +initialize() +run(content) +get_processor() +set_processor(value) }
-class DatasetStatistics { -dict class_counts +initialize() +add_sample(label) +get_class_counts() +set_class_counts(value) }
-PreprocessingPipeline *-- ImagePreprocessor
+class DatasetManager { -datasetPath: String -datasetSource: String -license: String +loadDataset() +validateDataset() +getDatasetInfo() }
+class PreprocessingPipeline { -imageSize: Integer -normalizationMethod: String +resizeImages() +normalizeImages() +preprocessImages() }
+class DatasetMetadata { -sourceURL: String -license: String -version: String +getMetadata() +updateMetadata() }
+class DatasetSplit { -trainSet: List -validationSet: List -testSet: List +splitData() +getSplitInfo() }
+DatasetManager --> PreprocessingPipeline
+DatasetManager *-- DatasetMetadata
+DatasetManager *-- DatasetSplit

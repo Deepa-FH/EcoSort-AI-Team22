@@ -1,12 +1,13 @@
 class RecyclingRule:
-    """Represents reviewed disposal guidance; owned by Mayuresh Kumbhar."""
-    def __init__(self, category: str, bin_name: str, instruction: str) -> None:
-        self._category, self._bin_name, self._instruction = category, bin_name, instruction
-    def initialize(self) -> None:
-        if not all((self._category, self._bin_name, self._instruction)): raise ValueError("Complete rule required.")
-    def get_category(self) -> str: return self._category
-    def set_category(self, value: str) -> None: self._category = value.strip()
-    def get_bin_name(self) -> str: return self._bin_name
-    def set_bin_name(self, value: str) -> None: self._bin_name = value.strip()
-    def get_instruction(self) -> str: return self._instruction
-    def set_instruction(self, value: str) -> None: self._instruction = value.strip()
+    def __init__(self,category,binType,region='Germany',instructions=''): self.__category,self.__binType,self.__region,self.__instructions=category,binType,region,instructions
+    def initialize(self): return self.validateRule()
+    def getRuleDetails(self): return {'category':self.__category,'binType':self.__binType,'region':self.__region,'instructions':self.__instructions}
+    def validateRule(self): return bool(self.__category and self.__binType and self.__region)
+    def getCategory(self): return self.__category
+    def setCategory(self,v): self.__category=str(v)
+    def getBinType(self): return self.__binType
+    def setBinType(self,v): self.__binType=str(v)
+    def getRegion(self): return self.__region
+    def setRegion(self,v): self.__region=str(v)
+    def getInstructions(self): return self.__instructions
+    def setInstructions(self,v): self.__instructions=str(v)

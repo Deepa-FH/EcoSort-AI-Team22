@@ -1,21 +1,16 @@
 classDiagram
-direction LR
-class ImageLoader
-class ImageValidator
-class PreprocessingPipeline
-class WasteDetector
-class ConfidenceFilter
-class RecyclingRuleEngine
-class WasteAssistant
-class PredictionController
-class DashboardService
-class ApplicationCoordinator
-PreprocessingPipeline --> ImageLoader
-PreprocessingPipeline --> ImageValidator
-WasteDetector *-- ConfidenceFilter
-WasteAssistant *-- RecyclingRuleEngine
-PredictionController --> PreprocessingPipeline
-PredictionController --> WasteDetector
-PredictionController --> WasteAssistant
-ApplicationCoordinator *-- PredictionController
-ApplicationCoordinator *-- DashboardService
+DatasetManager --> PreprocessingPipeline : uses
+DatasetManager *-- DatasetMetadata
+DatasetManager *-- DatasetSplit
+ImageRecognitionService --> ImagePreprocessor : uses
+ImageRecognitionService --> WasteClassificationModel : uses
+WasteClassificationModel --> PredictionResult : creates
+RecyclingGuidanceService --> RecyclingRule : retrieves 0..*
+RecyclingGuidanceService --> AskAIService : uses
+RecyclingRule ..> GuidanceResponse : provides
+AskAIService ..> GuidanceResponse : provides
+WasteSortingWebApp --> IntegrationController : uses
+IntegrationController --> ImageRecognitionService : calls
+IntegrationController --> RecyclingGuidanceService : calls
+IntegrationController --> DashboardService : uses
+IntegrationController --> WasteRepository : uses

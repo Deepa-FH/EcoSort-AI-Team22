@@ -1,7 +1,6 @@
 """Subsystem 2: Prasad Hule — AI Image Recognition."""
-from .model_loader import ModelLoader
-from .detection_models import BoundingBox, DetectionResult
-from .confidence_filter import ConfidenceFilter
-from .waste_detector import WasteDetector
-
-__all__ = ["ModelLoader", "BoundingBox", "DetectionResult", "ConfidenceFilter", "WasteDetector"]
+from .image_recognition_service import ImageRecognitionService
+from .image_preprocessor import ImagePreprocessor
+from .waste_classification_model import WasteClassificationModel
+from .prediction_result import PredictionResult
+__all__ = ["ImageRecognitionService", "ImagePreprocessor", "WasteClassificationModel", "PredictionResult"]
