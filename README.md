@@ -1,5 +1,5 @@
 # EcoSort AI - Home Task 4
-# Presentation Link [YouTube] :
+# Presentation Link [YouTube] : **[Presentation video](https://www.youtube.com/watch?v=XhRAf5f_Iio)**
 ## Exception Handling and Unit Tests
 
 This assignment adds subsystem-specific exceptions, safe error handlers, and exactly **15 automated tests** to the four subsystems of the Sortly AI capstone. Tests use small in-memory images and fake model/LLM objects, so they run without YOLO weights, a GPU, an API key, MySQL, or internet access.
