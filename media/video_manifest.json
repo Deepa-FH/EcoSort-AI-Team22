@@ -1,0 +1,128 @@
+[
+  {
+    "item": 1,
+    "filename": "02dffcca-realwaste__Glass__Glass_360.jpg",
+    "expected_broad_label": "Glass",
+    "start_second": 0.0
+  },
+  {
+    "item": 2,
+    "filename": "1e26647b-trashpanda__Biomuell__Biomuell_0092.jpg",
+    "expected_broad_label": "Biomuell",
+    "start_second": 0.5
+  },
+  {
+    "item": 3,
+    "filename": "1e530a10-realwaste__Plastic__Plastic_282.jpg",
+    "expected_broad_label": "Plastic",
+    "start_second": 1.0
+  },
+  {
+    "item": 4,
+    "filename": "1fa06289-realwaste__Plastic__Plastic_801.jpg",
+    "expected_broad_label": "Plastic",
+    "start_second": 1.5
+  },
+  {
+    "item": 5,
+    "filename": "1fa60d40-realwaste__Glass__Glass_7.jpg",
+    "expected_broad_label": "Glass",
+    "start_second": 2.0
+  },
+  {
+    "item": 6,
+    "filename": "2b783e76-realwaste__Plastic__Plastic_787.jpg",
+    "expected_broad_label": "Plastic",
+    "start_second": 2.5
+  },
+  {
+    "item": 7,
+    "filename": "2c5e20e6-realwaste__Plastic__Plastic_3.jpg",
+    "expected_broad_label": "Plastic",
+    "start_second": 3.0
+  },
+  {
+    "item": 8,
+    "filename": "2cf046ed-realwaste__Glass__Glass_68.jpg",
+    "expected_broad_label": "Glass",
+    "start_second": 3.5
+  },
+  {
+    "item": 9,
+    "filename": "3c104d05-realwaste__Plastic__Plastic_28.jpg",
+    "expected_broad_label": "Plastic",
+    "start_second": 4.0
+  },
+  {
+    "item": 10,
+    "filename": "3c8a3e37-realwaste__Plastic__Plastic_9.jpg",
+    "expected_broad_label": "Plastic",
+    "start_second": 4.5
+  },
+  {
+    "item": 11,
+    "filename": "3ca7c6a6-realwaste__Metal__Metal_42.jpg",
+    "expected_broad_label": "Metal",
+    "start_second": 5.0
+  },
+  {
+    "item": 12,
+    "filename": "3d316dad-trashpanda__Restmuell__Restmuell_0011_-_Copy_-_Copy.jpg",
+    "expected_broad_label": "Restmuell",
+    "start_second": 5.5
+  },
+  {
+    "item": 13,
+    "filename": "3ee70a97-realwaste__Glass__Glass_2.jpg",
+    "expected_broad_label": "Glass",
+    "start_second": 6.0
+  },
+  {
+    "item": 14,
+    "filename": "4afd815b-realwaste__Textile_Trash__Textile_Trash_170_-_Copy.jpg",
+    "expected_broad_label": "Textile_Trash",
+    "start_second": 6.5
+  },
+  {
+    "item": 15,
+    "filename": "4b803a3d-realwaste__Cardboard__Cardboard_25.jpg",
+    "expected_broad_label": "Cardboard",
+    "start_second": 7.0
+  },
+  {
+    "item": 16,
+    "filename": "4b920901-trashpanda__Biomuell__Biomuell_0091.jpg",
+    "expected_broad_label": "Biomuell",
+    "start_second": 7.5
+  },
+  {
+    "item": 17,
+    "filename": "4c1ba798-realwaste__Metal__Metal_45.jpg",
+    "expected_broad_label": "Metal",
+    "start_second": 8.0
+  },
+  {
+    "item": 18,
+    "filename": "4dab9e05-realwaste__Glass__Glass_25.jpg",
+    "expected_broad_label": "Glass",
+    "start_second": 8.5
+  },
+  {
+    "item": 19,
+    "filename": "4e29fded-realwaste__Cardboard__Cardboard_23.jpg",
+    "expected_broad_label": "Cardboard",
+    "start_second": 9.0
+  },
+  {
+    "item": 20,
+    "filename": "4ece9cbb-realwaste__Plastic__Plastic_818.jpg",
+    "expected_broad_label": "Plastic",
+    "start_second": 9.5
+  },
+  {
+    "item": 21,
+    "filename": "5a0e0559-realwaste__Plastic__Plastic_267.jpg",
+    "expected_broad_label": "Plastic",
+    "start_second": 10.0
+  }
+]
