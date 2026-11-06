@@ -1,6 +1,6 @@
 # Home Task 2 - Real-Time Data Processing
 
-# Presentation Link [YouTube] : **[Presentation video](https://www.youtube.com/watch?v=XhRAf5f_Iio)**
+# Presentation Link [YouTube] : **[Presentation video](https://youtu.be/k51r7ukfHzA?is=P5BkhNf_qACyAhTH)**
 
 ## AI-Powered Waste Sorting & Recycling Assistant
 
