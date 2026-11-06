@@ -1,6 +1,6 @@
 # AI-Powered Waste Sorting & Recycling Assistant
 
-# Presentation Link [YouTube] : **[Presentation video](https://youtu.be/k51r7ukfHzA?is=P5BkhNf_qACyAhTH)**
+# Presentation Link [YouTube] : **[Presentation video](https://youtu.be/jG0oKkq1iSs?is=QIMbuncBO9aFFdVv)**
 
 # EcoSort AI — Home Assignment 1
 
