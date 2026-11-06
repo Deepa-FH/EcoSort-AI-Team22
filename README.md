@@ -1,5 +1,7 @@
 # AI-Powered Waste Sorting & Recycling Assistant
 
+# Presentation Link [YouTube] : **[Presentation video](https://youtu.be/k51r7ukfHzA?is=P5BkhNf_qACyAhTH)**
+
 # EcoSort AI — Home Assignment 1
 
 This submission translates the class diagrams from the Team 22 capstone presentation into executable Python OOP classes. Each member implements four UML classes, exceeding the requirement of at least three unique classes per student.
