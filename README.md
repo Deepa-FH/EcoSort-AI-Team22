@@ -56,6 +56,3 @@ subsystem_4_web_integration/       Vijay's four classes
 - [Recycling rules and Ask AI](diagrams/subsystem_3_uml.mmd)
 - [Web app and integration](diagrams/subsystem_4_uml.mmd)
 
-## Presentation link
-
-Add the final 3–5 minute team video URL here before submission: **[Team presentation video](PASTE_VIDEO_LINK_HERE)**
