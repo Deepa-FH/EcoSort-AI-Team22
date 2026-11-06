@@ -1,5 +1,7 @@
 # Home Task 2 - Real-Time Data Processing
 
+# Presentation Link [YouTube] : **[Presentation video](https://www.youtube.com/watch?v=XhRAf5f_Iio)**
+
 ## AI-Powered Waste Sorting & Recycling Assistant
 
 Team 22 implements an event-driven stream pipeline for an automated conveyor-belt optical sorter. A local YOLO model reads video frames, uncertain predictions are filtered, bounding-box metrics and visual tags are transformed into material categories, and each accepted item receives a conveyor routing code.
