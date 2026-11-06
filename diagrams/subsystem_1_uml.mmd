@@ -1,0 +1,8 @@
+classDiagram
+class DatasetManager { -datasetPath: String -datasetSource: String -license: String +loadDataset() +validateDataset() +getDatasetInfo() }
+class PreprocessingPipeline { -imageSize: Integer -normalizationMethod: String +resizeImages() +normalizeImages() +preprocessImages() }
+class DatasetMetadata { -sourceURL: String -license: String -version: String +getMetadata() +updateMetadata() }
+class DatasetSplit { -trainSet: List -validationSet: List -testSet: List +splitData() +getSplitInfo() }
+DatasetManager --> PreprocessingPipeline
+DatasetManager *-- DatasetMetadata
+DatasetManager *-- DatasetSplit

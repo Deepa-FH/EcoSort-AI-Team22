@@ -1,0 +1,9 @@
+classDiagram
+class RecyclingGuidanceService { -region: String +getDisposalGuidance() +findApplicableRule() +explainWasteCategory() }
+class RecyclingRule { -category: String -binType: String -region: String -instructions: String +getRuleDetails() +validateRule() }
+class AskAIService { -question: String +askQuestion() +generateAnswer() }
+class GuidanceResponse { -answer: String -binRecommendation: String -sourceReference: String +getResponse() }
+RecyclingGuidanceService --> RecyclingRule : retrieves 0..*
+RecyclingGuidanceService --> AskAIService
+RecyclingRule ..> GuidanceResponse
+AskAIService ..> GuidanceResponse

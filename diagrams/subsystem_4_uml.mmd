@@ -1,0 +1,8 @@
+classDiagram
+class WasteSortingWebApp { -userInput: String -uploadedImage: Image +uploadImage() +submitQuestion() +displayResults() }
+class IntegrationController { +classifyWaste() +requestGuidance() +handleResponse() }
+class DashboardService { +getStatistics() +getRecentResults() }
+class WasteRepository { +saveResult() +fetchHistory() }
+WasteSortingWebApp --> IntegrationController
+IntegrationController --> DashboardService
+IntegrationController --> WasteRepository

@@ -1,0 +1,16 @@
+classDiagram
+DatasetManager --> PreprocessingPipeline : uses
+DatasetManager *-- DatasetMetadata
+DatasetManager *-- DatasetSplit
+ImageRecognitionService --> ImagePreprocessor : uses
+ImageRecognitionService --> WasteClassificationModel : uses
+WasteClassificationModel --> PredictionResult : creates
+RecyclingGuidanceService --> RecyclingRule : retrieves 0..*
+RecyclingGuidanceService --> AskAIService : uses
+RecyclingRule ..> GuidanceResponse : provides
+AskAIService ..> GuidanceResponse : provides
+WasteSortingWebApp --> IntegrationController : uses
+IntegrationController --> ImageRecognitionService : calls
+IntegrationController --> RecyclingGuidanceService : calls
+IntegrationController --> DashboardService : uses
+IntegrationController --> WasteRepository : uses

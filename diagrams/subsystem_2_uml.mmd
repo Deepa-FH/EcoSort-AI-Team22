@@ -1,0 +1,8 @@
+classDiagram
+class ImageRecognitionService { -modelVersion: String -confidenceThreshold: Float +recognizeImage() +predictCategory() +getPredictionResult() }
+class ImagePreprocessor { -targetImageSize: Integer -colorMode: String +validateImage() +prepareImage() }
+class WasteClassificationModel { -modelPath: String -modelVersion: String +loadModel() +predict() +evaluateConfidence() }
+class PredictionResult { -wasteCategory: String -confidenceScore: Float -isReliable: Boolean +getResultDetails() }
+ImageRecognitionService --> ImagePreprocessor
+ImageRecognitionService --> WasteClassificationModel
+WasteClassificationModel --> PredictionResult : creates
