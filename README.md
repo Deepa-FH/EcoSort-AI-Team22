@@ -1,5 +1,7 @@
 # EcoSort AI - Home Task 3
 
+# Presentation Link [YouTube] : **[Presentation video](https://youtu.be/k51r7ukfHzA?is=P5BkhNf_qACyAhTH)**
+
 ## Web APIs and Database Access Layers
 
 This is a small, portable **Flask + MySQL** application based on the scan-history part of the EcoSort AI capstone. It stores waste-classification results, exposes them through a REST API, and provides a responsive browser interface for CRUD operations.
