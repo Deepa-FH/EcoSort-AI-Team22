@@ -105,10 +105,3 @@ python main.py
 
 The test boundaries mirror the real capstone modules: `dataset_preprocessing`, `image_recognition`, `recycling_ai`, and the Flask web/dashboard integration. Heavy external dependencies are replaced only inside tests; the business rules and error behavior remain representative of Sortly AI.
 
-## GitHub submission
-
-Upload this folder to the Home Task 4 branch and add the branch URL here before submission:
-
-```text
-GitHub link: TO BE ADDED
-```
