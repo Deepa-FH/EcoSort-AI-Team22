@@ -28,6 +28,23 @@ Video -> YOLO RecognitionEvent -> ConfidenceFilter -> MaterialCategoryMapper
 - **Iterator:** `VideoEventStream` implements `__iter__()` and `__next__()`.
 - **Generator:** `processed_events()` lazily yields each processed event.
 
+## OOP concepts
+
+Use the following files when demonstrating the concepts in the video:
+
+| Concept | File | Class or method to show | What it demonstrates |
+|---|---|---|---|
+| Abstraction / ABC | `realtime_pipeline/stream_processor.py` | `class StreamProcessor(ABC)` and `@abstractmethod process()` | Defines the common contract for every stream processor. |
+| Inheritance | `realtime_pipeline/processors/confidence_filter.py` | `class ConfidenceFilter(StreamProcessor)` | A specialized processor inherits the common processor interface. |
+| Inheritance | `realtime_pipeline/processors/material_mapper.py` | `class MaterialCategoryMapper(StreamProcessor)` | A second specialized implementation of the same interface. |
+| Inheritance | `realtime_pipeline/processors/route_assigner.py` | `class ConveyorRouteAssigner(StreamProcessor)` | Adds routing behavior while preserving the same API. |
+| Inheritance | `realtime_pipeline/processors/frame_annotator.py` | `class FrameAnnotator(StreamProcessor)` | Adds visualization behavior through the same `process()` method. |
+| Polymorphism | `realtime_pipeline/pipeline.py` | `ProcessingPipeline.process()` | Calls `processor.process(event)` uniformly for different processor objects. |
+| Operator overloading | `realtime_pipeline/stream_processor.py` | `StreamProcessor.__or__()` | Overloads `|` to combine two processors into a pipeline. |
+| Pipeline composition | `main.py` | `build_pipeline()` | Demonstrates `ConfidenceFilter() | MaterialCategoryMapper() | ...`. |
+| Iterator | `realtime_pipeline/video_stream.py` | `VideoEventStream.__iter__()` and `__next__()` | Consumes video frames one at a time and raises `StopIteration` at the end. |
+| Generator | `realtime_pipeline/pipeline.py` | `processed_events()` | Uses `yield` to process events lazily and efficiently. |
+
 ## Main classes
 
 | Class | Responsibility |
