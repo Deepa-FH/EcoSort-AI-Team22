@@ -17,7 +17,7 @@ Each subsystem folder has its own README with the classes, UML diagram, data sto
 
 ## 1 · Quick start
 
-### ⭐ Easiest: run with Docker (nothing to install except Docker)
+### ⭐Run with Docker
 
 The ready-made image is on Docker Hub: **`prasadhule001/ecosort-ai`**. No Python, no packages, no model download.
 
