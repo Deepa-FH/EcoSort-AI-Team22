@@ -37,7 +37,7 @@ class AppConfig:
     tunnel_enabled: bool = field(default_factory=lambda: _env_flag("SORTLY_ENABLE_TUNNEL", True))
     # --- LLM (Ask AI) ---
     api_key: str | None = field(default_factory=lambda: os.environ.get("LLM_API_KEY") or None)
-    llm_model: str = field(default_factory=lambda: os.environ.get("LLM_MODEL", "mistralai-mistral-small-4"))
+    llm_model: str = field(default_factory=lambda: os.environ.get("LLM_MODEL", "Qwen3.8 27B"))
     llm_base_url: str = field(default_factory=lambda: os.environ.get("LLM_BASE_URL", "https://chat.kiconnect.nrw/api/v1"))
     # --- accounts / security ---
     admin_username: str = field(default_factory=lambda: os.environ.get("SORTLY_USERNAME", "admin"))

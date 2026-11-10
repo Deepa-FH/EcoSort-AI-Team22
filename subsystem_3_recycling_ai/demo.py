@@ -16,7 +16,7 @@ from .rule_store import InMemoryRuleStore
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--api-key", default=os.environ.get("LLM_API_KEY"))
-    parser.add_argument("--llm-model", default=os.environ.get("LLM_MODEL", "mistralai-mistral-small-4"))
+    parser.add_argument("--llm-model", default=os.environ.get("LLM_MODEL", "Qwen3.8 27B"))
     parser.add_argument("--llm-base-url", default=os.environ.get("LLM_BASE_URL", "https://chat.kiconnect.nrw/api/v1"))
     args = parser.parse_args()
 

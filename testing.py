@@ -49,7 +49,7 @@ def live_llm_check(api_key: str) -> bool:
     """Optional: ask the real LLM one short question to prove the key works."""
     sys.path.insert(0, str(ROOT))
     from subsystem_3_recycling_ai import LLMServiceError, OpenAICompatibleClient
-    client = OpenAICompatibleClient(api_key, "mistralai-mistral-small-4", "https://chat.kiconnect.nrw/api/v1")
+    client = OpenAICompatibleClient(api_key, "Qwen3.8 27B", "https://chat.kiconnect.nrw/api/v1")
     try:
         answer = client.ask("In one short sentence: which German bin takes clean paper?")
     except LLMServiceError as error:

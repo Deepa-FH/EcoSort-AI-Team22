@@ -52,6 +52,9 @@ RecyclingRuleEngine ..> RecyclingRule
 ## Data storage (PPT)
 SQLite table `rules` (label, category, bin, bin_de, colour, hex, note, `updated_at`) - owned by Subsystem 4's repository, edited through this subsystem's engine. The seed values are in `default_rules.py`.
 
+## Which LLM?
+Default: **Qwen3.8 27B** on KIconnect NRW. We compared the models on sample photos: Qwen identified them correctly; Mistral Small 4 saw the images but misidentified two of three; GPT-OSS-120B cannot see images. Change with `--llm-model` / `LLM_MODEL`.
+
 ## API key (important)
 The key is **never** in source code. It comes from `--api-key` or the `LLM_API_KEY` environment variable, and is never printed (`repr(client)` shows `api_key='set'`). Without a key the app still sorts waste with local rules ("Keep paid LLM optional").
 

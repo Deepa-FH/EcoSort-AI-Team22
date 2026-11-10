@@ -26,7 +26,7 @@ The ready-made image is on Docker Hub: **`prasadhule001/ecosort-ai`**. No Python
 | Step | What to do | Command |
 |:-:|---|---|
 | 1 | Open a terminal (Windows: **PowerShell**; macOS/Linux: **Terminal**) | |
-| 2 | Download the image (about 0.6 GB, once) | `docker pull prasadhule001/ecosort-ai:1.0` |
+| 2 | Download the image (about 0.6 GB, once) | `docker pull prasadhule001/ecosort-ai:1.1` |
 | 3 | Start it and **pass your API key** | see below |
 | 4 | Open the app in your browser | <http://localhost:5000> |
 | 5 | Sign in | **Sign in as: Administrator** · username `admin` · password `admin` |
@@ -36,13 +36,13 @@ The ready-made image is on Docker Hub: **`prasadhule001/ecosort-ai`**. No Python
 
 ```powershell
 # Windows PowerShell / macOS / Linux - the key is passed with  -e LLM_API_KEY=...
-docker run --rm -p 5000:5000 -e LLM_API_KEY="YOUR_API_KEY" prasadhule001/ecosort-ai:1.0
+docker run --rm -p 5000:5000 -e LLM_API_KEY="YOUR_API_KEY" prasadhule001/ecosort-ai:1.1
 ```
 
 Alternative - pass the key as a program argument (same result):
 
 ```powershell
-docker run --rm -p 5000:5000 prasadhule001/ecosort-ai:1.0 --api-key "YOUR_API_KEY"
+docker run --rm -p 5000:5000 prasadhule001/ecosort-ai:1.1 --api-key "YOUR_API_KEY"
 ```
 
 > **Where does the API key go?** Only in the `docker run` command, at the moment you start the container. It is **not** stored in the image, so everyone can use the same image with their own key.
@@ -70,7 +70,7 @@ Where does the API key go? Either of these - never into the source code:
 | Environment variable | PowerShell: `$env:LLM_API_KEY="YOUR_API_KEY"; python main.py` · bash: `LLM_API_KEY=YOUR_API_KEY python main.py` |
 
 Other options: `--port 8000`, `--no-browser`, `--model path/to/best_model.pt`, `--llm-model NAME`, `--llm-base-url URL`, `--data-dir DIR`, `--help`.
-Default LLM: KIconnect NRW (`https://chat.kiconnect.nrw/api/v1`, model `mistralai-mistral-small-4`); any OpenAI-compatible API works via `--llm-base-url` / `--llm-model`.
+Default LLM: KIconnect NRW (`https://chat.kiconnect.nrw/api/v1`, model `Qwen3.8 27B`, a vision-capable model - in our test it identified photos correctly where Mistral Small 4 did not and GPT-OSS cannot see images); any OpenAI-compatible API works via `--llm-base-url` / `--llm-model`.
 
 **No key?** The app still runs: recognition and local rules work offline; low-confidence photos get the local rule instead of an AI review, and chat shows how to add a key.
 
