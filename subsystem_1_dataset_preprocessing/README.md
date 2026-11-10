@@ -1,6 +1,6 @@
 # Subsystem 1 - Dataset & Preprocessing
 
-**Owner: Deepa Halapeti (7225894)** · Goal from the PPT: *prepare a reliable, documented dataset and make sure every image that enters the system is safe and clean.*
+**Owner: Deepa Halapeti (7225894)** · Goal : *prepare a reliable, documented dataset and make sure every image that enters the system is safe and clean.*
 
 ## What runs in the real app
 
