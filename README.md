@@ -21,7 +21,7 @@ Each subsystem folder has its own README with the classes, UML diagram, data sto
 
 The ready-made image is on Docker Hub: **`prasadhule001/ecosort-ai`**. No Python, no packages, no model download.
 
-**Before you start:** install **Docker Desktop** (free): <https://www.docker.com/products/docker-desktop> - open it and wait until it says **"Engine running"**. You also need an **LLM API key** (the key your teacher / KIconnect gave you).
+**Before you start:** install **Docker Desktop** (free): <https://www.docker.com/products/docker-desktop> - open it and wait until it says **"Engine running"**. You also need an **LLM API key** (KIconnect).
 
 | Step | What to do | Command |
 |:-:|---|---|
@@ -46,36 +46,6 @@ docker run --rm -p 5000:5000 prasadhule001/ecosort-ai:1.0 --api-key "YOUR_API_KE
 ```
 
 > **Where does the API key go?** Only in the `docker run` command, at the moment you start the container. It is **not** stored in the image, so everyone can use the same image with their own key.
-
-**Check that it works**
-1. In the terminal you should see `'api_key': 'set'` and `Running on http://0.0.0.0:5000`. (`'api_key': 'missing'` = the key was not passed.)
-2. In the browser the top bar shows **"Ask AI ready"** (green). **"Local rules mode"** (orange) means no key was received.
-3. Upload a photo on the Assistant page → you get the waste type, confidence and the right bin.
-4. Raise the threshold to 95 % in *Settings* and upload again → the AI reviews the photo (this proves your key works).
-
-**Useful variations**
-
-| Need | Command |
-|---|---|
-| Port 5000 already used | `docker run --rm -p 8080:5000 -e LLM_API_KEY="YOUR_API_KEY" prasadhule001/ecosort-ai:1.0` → open <http://localhost:8080> |
-| Keep history between runs | add `-v ecosort-data:/data` after `-p 5000:5000` |
-| Run in the background | replace `--rm` with `-d --name ecosort` (stop with `docker stop ecosort`) |
-| Run the automated tests inside the container | `docker run --rm --entrypoint python prasadhule001/ecosort-ai:1.0 testing.py --quick` |
-| No internet / Docker Hub blocked | get `ecosort-ai.tar`, then `docker load -i ecosort-ai.tar` and run with the image name `ecosort-ai` instead of `prasadhule001/ecosort-ai:1.0` |
-| Build the image yourself from this folder | `docker build -t ecosort-ai .` then `docker run --rm -p 5000:5000 -e LLM_API_KEY="YOUR_API_KEY" ecosort-ai` |
-| Use docker compose | copy `.env.example` to `.env`, put the key in it, run `docker compose up --build` |
-
-**Troubleshooting**
-
-| Problem | Fix |
-|---|---|
-| `failed to connect to the docker API` | Docker Desktop is not running - start it and wait for "Engine running" |
-| `pull access denied` / `insufficient_scope` | Check the spelling `prasadhule001/ecosort-ai:1.0` (lowercase); the repository must be public |
-| `port is already allocated` | use `-p 8080:5000` and open port 8080 |
-| Page does not open | wait ~20 s after start; check `http://localhost:5000/health` shows `"status":"ok"` |
-| "Local rules mode" although you passed a key | the key was empty - check the quotes and spelling (`LLM_API_KEY`) |
-| AI answers fail but key is set | no internet, wrong key, or wrong model/URL (`-e LLM_MODEL=...`, `-e LLM_BASE_URL=...`) |
-| Apple-Silicon Mac warns about platform | the image is built for Intel/AMD (amd64) and runs through emulation - slower but works |
 
 Notes: the image is CPU-only (works on every laptop, no GPU needed); the "Go live" public-tunnel feature is disabled inside Docker; the camera button needs `localhost` or HTTPS (uploading a photo always works).
 
@@ -205,15 +175,6 @@ Choose **Sign in as** on the login form (the choice must match the account's rol
 | Scan history, CSV export | - | - | yes |
 | Edit waste rules | - | - | yes |
 | "Go live" public tunnel (local Python only) | - | - | yes |
-
-## 7 · Good to know
-
-* **Security:** passwords are hashed; uploads are validated and size-limited (8 MB); API errors never expose stack traces; the API key is never logged or sent to the browser. The default `admin/admin` account and sign-up code `pythonai` are for demonstration - change with `SORTLY_USERNAME`, `SORTLY_PASSWORD`, `SORTLY_SIGNUP_CODE`.
-* **Public link ("Go live")**: only when running with Python on a PC that has `cloudflared` installed (Settings → Go live). Disabled in Docker (`--no-tunnel` disables it anywhere).
-* **Camera** needs `localhost` or HTTPS; uploads always work.
-* **Server:** Flask's built-in server is fine for demos; use a production WSGI server for real deployment.
-* **Sample municipality figures** on the dashboard are illustrative and labelled "sample data".
-* **PPT vs final build:** the proposal named Streamlit; the final app is Flask. Per-city rules, rule source URLs/review dates and training-time augmentation were out of scope for this app version.
 
 ## 8 · Team video
 
