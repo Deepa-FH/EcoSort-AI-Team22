@@ -1,0 +1,16 @@
+# docker compose up --build      (reads LLM_API_KEY from a .env file or your shell)
+services:
+  ecosort-ai:
+    build: .
+    image: ecosort-ai:latest
+    ports:
+      - "5000:5000"
+    environment:
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_MODEL: ${LLM_MODEL:-mistralai-mistral-small-4}
+      LLM_BASE_URL: ${LLM_BASE_URL:-https://chat.kiconnect.nrw/api/v1}
+    volumes:
+      - ecosort-data:/data      # keeps the database and photos between runs
+    restart: unless-stopped
+volumes:
+  ecosort-data:

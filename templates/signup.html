@@ -1,0 +1,32 @@
+{% from "_icons.html" import icon %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#1f9d63">
+  <title>Create account · EcoSort AI</title>
+  <script>(function(){try{var t=localStorage.getItem("ecosort-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}catch(e){}})();</script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="orbs"><i></i><i></i><i></i></div>
+  <main class="auth">
+    <div class="auth-card glass">
+      <section class="auth-brand">
+        <div class="brand"><span class="brand-mark">{{ icon('leaf', 22) }}</span><span><strong>EcoSort AI</strong></span></div>
+        <div><span class="eyebrow">Invited access</span><h1>Join the sorting team.</h1><p>Choose a standard, municipality or administrator account.</p></div>
+      </section>
+      <form class="auth-form" method="post" action="{{ url_for('signup') }}">
+        <h2>Create account</h2><p>Use the invitation code from your project team.</p>
+        {% if error %}<div class="alert bad" role="alert">{{ error }}</div>{% endif %}
+        <label class="field">Username<input name="username" required autofocus minlength="3"></label>
+        <label class="field">Password<input name="password" type="password" minlength="6" required></label>
+        <label class="field">Account type<select name="role"><option value="user">Normal user</option><option value="municipality">Municipality worker</option><option value="admin">Administrator</option></select></label>
+        <label class="field">Invitation code<input name="signup_code" required></label>
+        <button class="btn btn-primary" type="submit">Create account →</button>
+        <a class="link" href="{{ url_for('login') }}">Back to sign in</a>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

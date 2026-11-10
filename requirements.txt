@@ -1,5 +1,7 @@
+# EcoSort AI - Python dependencies (Python 3.10 - 3.12 recommended)
 Flask>=3.1,<4
 Pillow>=11
-ultralytics==8.4.174
-openai>=1.60,<3
-pytest>=8
+numpy>=1.26
+ultralytics==8.4.174        # YOLO inference (installs PyTorch)
+openai>=1.60,<3             # OpenAI-compatible client used for Ask AI
+pytest>=8                   # automated tests (python testing.py)

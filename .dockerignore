@@ -1,10 +1,10 @@
 .venv
+venv
 __pycache__
 *.pyc
 .pytest_cache
-.git
+.pytest_tmp
+data
 .env
-tests
-docker
-models/*.pt
-*.log
+.git
+*.tar

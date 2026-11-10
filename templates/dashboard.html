@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% set page_title = "Dashboard" %}
+{% set page_sub = "Live scan statistics and recycling impact overview." %}
+
+{% block content %}
+<script id="boot-data" type="application/json">{{ {'rules': rules} | tojson }}</script>
+
+<section class="kpis">
+  <article class="kpi glass"><span class="ki">{{ icon('scan', 24) }}</span><div><small>Photos scanned</small><strong id="kpi-scans" data-count="0">0</strong><span>Stored scans</span></div></article>
+  <article class="kpi glass"><span class="ki">{{ icon('sparkles', 24) }}</span><div><small>AI reviews</small><strong id="kpi-llm" data-count="0">0</strong><span>Low-confidence photos</span></div></article>
+  <article class="kpi glass"><span class="ki">{{ icon('bolt', 24) }}</span><div><small>Est. tokens</small><strong id="kpi-tokens" data-count="0">0</strong><span>AI usage estimate</span></div></article>
+  <article class="kpi glass"><span class="ki">{{ icon('trend', 24) }}</span><div><small>Recycling rate</small><strong id="kpi-rate">–</strong><span>Dortmund-area sample</span></div></article>
+</section>
+
+<section class="card glass">
+  <div class="card-head"><div><h2>Filters</h2><p class="sub">Tap chips to filter every chart. Nothing selected = show all.</p></div>
+    <div class="actions" style="margin:0"><button class="btn btn-sm" id="clear-filters" type="button">Clear</button>
+      {% if user.role == 'admin' %}<a class="btn btn-sm btn-primary" href="{{ url_for('export_csv') }}">{{ icon('download', 16) }} Export CSV</a>{% endif %}</div></div>
+  <div class="filters-body" id="filters"></div>
+</section>
+
+<section class="dash-grid">
+  <article class="card glass span-5"><div class="card-head"><div><h2>Scans by bin</h2><p class="sub">Share of predicted waste types</p></div></div>
+    <div class="donut-wrap"><svg class="chart" id="donut-bins" viewBox="0 0 220 220" role="img" aria-label="Scans by bin"></svg><div class="legend" id="legend-bins"></div></div></article>
+
+  <article class="card glass span-7"><div class="card-head"><div><h2>Most scanned items</h2><p class="sub">Ranked by number of scans</p></div></div>
+    <div class="hbars" id="bars-bins"></div></article>
+
+  <article class="card glass span-5"><div class="card-head"><div><h2>Local model vs Ask AI</h2><p class="sub">Who produced the answer</p></div></div>
+    <div class="donut-wrap"><svg class="chart" id="donut-source" viewBox="0 0 220 220" role="img" aria-label="Answer source"></svg><div class="legend" id="legend-source"></div></div></article>
+
+  <article class="card glass span-7"><div class="card-head"><div><h2>Recycling rate trend</h2><p class="sub">Monthly rate, Dortmund area</p></div><span class="sample-tag">sample data</span></div>
+    <svg class="chart" id="trend" viewBox="0 0 640 230" role="img" aria-label="Recycling rate trend"></svg></article>
+
+  <article class="card glass span-12"><div class="card-head"><div><h2>Municipality areas</h2><p class="sub">Recycling rate and monthly volume</p></div><span class="sample-tag">sample data</span></div>
+    <div class="areas" id="areas"></div></article>
+
+  {% if user.role == 'admin' %}
+  <article class="card glass span-12"><div class="card-head"><div><h2>Recent scans</h2><p class="sub">Latest photos analysed</p></div><a class="btn btn-sm" href="{{ url_for('history') }}">View all</a></div>
+    <div class="recent">
+      {% for scan in recent %}<a href="{{ url_for('history') }}"><img src="{{ url_for('photo', name=scan.image_path.split('/')[-1]) }}" alt="Scan {{ scan.id }}" loading="lazy"><span>{{ (scan.model_label or 'none')|replace('_',' ') }}</span></a>
+      {% else %}<p class="empty" style="width:100%">No scans yet. Analyse a photo on the Assistant page.</p>{% endfor %}
+    </div></article>
+  {% endif %}
+</section>
+<div class="tooltip" id="tooltip"></div>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='dashboard.js') }}"></script>{% endblock %}
