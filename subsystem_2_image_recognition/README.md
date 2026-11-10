@@ -56,8 +56,3 @@ python -m subsystem_2_image_recognition.demo      # runs the REAL model on 18 sa
 python -m pytest tests/test_subsystem_2_recognition.py -v   # 11 tests
 ```
 Result of the demo on the shipped samples: **18 / 18 correct** (these are examples, not a held-out test set - say so when presenting).
-
-## Debugging tips
-* `MODEL_NOT_FOUND` → wrong `--model` path or file is not a YOLO *detect* model.
-* GPU/CPU: `pick_device()` returns `0` if CUDA exists else `"cpu"` (Docker is CPU-only).
-* Print `result.boxes` in `WasteDetector.predict` to see raw model output.
