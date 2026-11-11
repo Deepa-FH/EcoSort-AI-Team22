@@ -2,8 +2,6 @@
 
 **Owner: Vijay Kathiresan (7226794)** · Goal from the PPT: *connect scanning, guidance, history and analytics in one usable application.*
 
-> The PPT planned Streamlit; the final app uses **Flask** (server-side Python + HTML/JS) for a more custom, mobile-friendly UI. Mention this when presenting.
-
 ## What this subsystem does
 
 It is the **integration layer**: it builds every object of the other three subsystems (`application_factory.py` - the *composition root*), exposes the HTTP routes, stores data in SQLite and renders the pages (Assistant, Settings, Dashboard, History, Rules, Login/Sign-up) with the glassmorphism UI in `../templates` and `../static`.
