@@ -2,7 +2,7 @@
 
 Python Compact Programming capstone · **Group 22** · FH Dortmund
 
-# Presentation Link [YouTube] : **[Presentation video](https://youtu.be/DQiKX4fOofI?is=h-DeqQ0h0I1E1lw5)**
+# Presentation Link [YouTube] : **[Presentation video](https://youtu.be/KSPYhftteHU?is=rGCiBpW-NYKTg029)**
 
 Upload or photograph a waste item → a trained **YOLO** model recognises it → local **German bin rules** (and an optional **AI assistant**) tell you where it goes → every scan lands in a **history and dashboard**.
 
