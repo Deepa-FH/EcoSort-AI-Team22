@@ -1,0 +1,76 @@
+{#- Shared page layout: background, sidebar (desktop), bottom bar (mobile), topbar.
+    Child pages set `page_title`, `page_sub` and fill the `content` and `scripts` blocks. -#}
+{% from "_icons.html" import icon %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#1f9d63">
+  <title>{{ page_title }} · EcoSort AI</title>
+  <script>
+    /* Apply the saved theme before the page paints (prevents a light/dark flash). */
+    (function () {
+      try {
+        var t = localStorage.getItem("ecosort-theme");
+        if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>.mobile-only{display:none}@media(max-width:900px){.mobile-only{display:flex}.topbar .brand{padding:0}}</style>
+</head>
+<body>
+  <div class="orbs"><i></i><i></i><i></i></div>
+
+  {% set nav = [('home', url_for('home'), 'chat', 'Assistant'),
+                ('settings', url_for('home') ~ '#settings', 'sliders', 'Settings')] %}
+  {# Role-based menu: dashboard = admin + municipality; history + rules = admin only #}
+  {% if user and user.role in ('admin', 'municipality') %}{% set nav = nav + [('dashboard', url_for('dashboard'), 'grid', 'Dashboard')] %}{% endif %}
+  {% if user and user.role == 'admin' %}{% set nav = nav + [('history', url_for('history'), 'clock', 'History')] %}{% endif %}
+  {% if user and user.role == 'admin' %}{% set nav = nav + [('admin_rules', url_for('admin_rules'), 'shield', 'Rules')] %}{% endif %}
+
+  <div class="shell">
+    <aside class="sidebar glass">
+      <div class="brand"><span class="brand-mark">{{ icon('leaf', 22) }}</span><span><strong>EcoSort AI</strong><small>Waste sorting assistant</small></span></div>
+      <nav aria-label="Main navigation">
+        {% for key, href, ico, label in nav %}
+        <a class="nav-item {{ 'active' if active_page == key else '' }}" data-page="{{ key }}" href="{{ href }}">{{ icon(ico) }}<span>{{ label }}</span></a>
+        {% endfor %}
+      </nav>
+      <div class="nav-spacer"></div>
+      <div class="side-foot">Signed in as <b>{{ user.username }}</b> · {{ user.role }}<br>Photos stay on this server.</div>
+      <form method="post" action="{{ url_for('logout') }}" class="logout-form"><button class="nav-item" type="submit">{{ icon('logout') }}<span>Sign out</span></button></form>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="brand mobile-only"><span class="brand-mark" style="width:34px;height:34px;border-radius:11px">{{ icon('leaf', 18) }}</span><strong>EcoSort AI</strong></div>
+          <h1>{{ page_title }}</h1>
+          <p>{{ page_sub }}</p>
+        </div>
+        <div class="top-actions">
+          {% if ai_ready %}<span class="pill"><i class="dot"></i> Ask AI ready</span>
+          {% else %}<span class="pill warn" title="Start the app with --api-key to enable Ask AI"><i class="dot"></i> Local rules mode</span>{% endif %}
+          <button class="icon-btn theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode" title="Light / dark">
+            <span class="moon">{{ icon('moon') }}</span><span class="sun">{{ icon('sun') }}</span></button>
+          <form method="post" action="{{ url_for('logout') }}" class="mobile-only" style="margin:0"><button class="icon-btn" type="submit" aria-label="Sign out" title="Sign out">{{ icon('logout') }}</button></form>
+        </div>
+      </header>
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <nav class="bottom-nav glass" aria-label="Mobile navigation">
+    {% for key, href, ico, label in nav %}
+    <a class="nav-item {{ 'active' if active_page == key else '' }}" data-page="{{ key }}" href="{{ href }}">{{ icon(ico, 22) }}<span>{{ label }}</span></a>
+    {% endfor %}
+  </nav>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="{{ url_for('static', filename='common.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

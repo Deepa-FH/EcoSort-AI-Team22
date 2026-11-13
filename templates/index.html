@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% set page_title = "Sorting assistant" %}
+{% set page_sub = "Show me an item and I'll find the right German disposal route." %}
+
+{% block content %}
+<script id="boot-data" type="application/json">{{ {'rules': rules, 'threshold': threshold} | tojson }}</script>
+
+<!-- ================= Assistant panel (chat + camera) ================= -->
+<section class="tabpanel active" id="panel-home">
+  <div class="chat-card glass">
+    <div class="conversation" id="conversation" aria-live="polite">
+      <div class="message">
+        <div class="avatar">{{ icon('leaf', 18) }}</div>
+        <div class="bubble welcome wide">
+          <span class="eyebrow">Smart sorting</span>
+          <h2>What would you like to recycle?</h2>
+          <p>Take a photo or upload one. I identify it with the trained YOLO model and show the correct bin. If the model is unsure, Ask AI takes a closer look.</p>
+          <div class="quick">
+            <button type="button" id="welcome-camera"><span class="qi">{{ icon('camera', 22) }}</span><span><strong>Take a photo</strong><small>Use your camera</small></span></button>
+            <button type="button" id="welcome-upload"><span class="qi">{{ icon('upload', 22) }}</span><span><strong>Upload image</strong><small>JPG, PNG or WebP</small></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="composer">
+      <button class="icon-btn" id="camera-button" type="button" aria-label="Take a photo" title="Take a photo">{{ icon('camera') }}</button>
+      <button class="icon-btn" id="upload-button" type="button" aria-label="Upload image" title="Upload image">{{ icon('upload') }}</button>
+      <input id="file-input" type="file" accept="image/*" hidden>
+      <input id="chat-input" type="text" maxlength="1200" placeholder="Ask a recycling question…" autocomplete="off">
+      <button class="btn btn-primary" id="send-button" type="button" aria-label="Send">{{ icon('send', 18) }}</button>
+    </div>
+    <p class="hint">AI guidance can vary by municipality. Check local rules for hazardous waste.</p>
+  </div>
+</section>
+
+<!-- ================= Settings panel ================= -->
+<section class="tabpanel" id="panel-settings">
+  <div class="settings-grid">
+    <div class="card glass">
+      <div class="card-head"><div><h2>Confidence threshold</h2><p class="sub">Below this value, Ask AI reviews the photo.</p></div><span class="big-num" id="threshold-output">{{ threshold }}%</span></div>
+      <input class="range" id="threshold-slider" type="range" min="10" max="95" step="1" value="{{ threshold }}">
+      <div class="range-labels"><span>10% · ask AI less</span><span>95% · ask AI more</span></div>
+      <div class="decision"><span class="di">Y</span><div><strong>At or above <b id="local-value">{{ threshold }}%</b></strong><small>Use the YOLO prediction + the local German bin rules</small></div></div>
+      <div class="decision ai"><span class="di">AI</span><div><strong>Below <b id="ai-value">{{ threshold }}%</b></strong><small>Send photo + prediction to Ask AI for a second opinion</small></div></div>
+    </div>
+
+    <div class="card glass">
+      <div class="card-head"><div><h2>Ask AI connection</h2><p class="sub">{{ 'An API key is configured on the server.' if ai_ready else 'No API key configured: the app runs on local rules.' }}</p></div>
+        <span class="status-chip {{ 'online' if ai_ready else 'error' }}">{{ 'Ready' if ai_ready else 'No key' }}</span></div>
+      {% if not ai_ready %}
+      <p class="sub">Restart the application with your key to enable chat and AI reviews:</p>
+      <code class="code">python main.py --api-key YOUR_KEY
+# Docker
+docker run -p 5000:5000 -e LLM_API_KEY=YOUR_KEY ecosort-ai</code>
+      {% else %}<p class="sub">Chat questions and low-confidence photos are answered by the configured language model. The key is never shown in the browser.</p>{% endif %}
+    </div>
+
+    {% if tunnel_enabled and user.role == 'admin' %}
+    <div class="card glass" id="tunnel-card" style="grid-column:1/-1">
+      <div class="card-head"><div><h2>Go live</h2><p class="sub">Create a temporary public Cloudflare link (needs <b>cloudflared</b> installed). Visitors must sign in.</p></div>
+        <span class="status-chip" id="tunnel-status">Offline</span></div>
+      <p id="tunnel-message" class="sub">Your application is private.</p>
+      <div class="tunnel-url" id="public-url" hidden><a id="public-url-link" href="#" target="_blank" rel="noopener"></a><button class="btn btn-sm" id="copy-url" type="button">Copy link</button></div>
+      <div class="actions"><button class="btn btn-primary" id="start-tunnel" type="button">{{ icon('cloud', 18) }} Go live</button><button class="btn btn-danger" id="stop-tunnel" type="button" hidden>Close tunnel</button></div>
+    </div>
+    {% endif %}
+
+    <div class="card glass" style="grid-column:1/-1">
+      <div class="card-head"><div><h2>German sorting guide</h2><p class="sub">Rules used for confident predictions (editable by administrators).</p></div></div>
+      <div class="bin-grid">
+        {% for label, rule in rules.items() %}
+        <article style="--bin: {{ rule.hex }}"><div class="bin"><i class="lid"></i><i class="body"></i></div><div><strong>{{ rule.category }}</strong><small>{{ rule.bin_de }}</small></div></article>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Camera dialog ================= -->
+<div class="camera-modal" id="camera-modal" aria-hidden="true">
+  <div class="camera-dialog glass">
+    <div class="card-head" style="margin:0"><div><span class="eyebrow">Live camera</span><h2>Place one item in the frame</h2></div><button class="icon-btn" id="close-camera" type="button" aria-label="Close camera">{{ icon('x') }}</button></div>
+    <video id="camera-video" autoplay playsinline muted></video>
+    <div class="camera-bar"><button class="btn" id="cancel-camera" type="button">Cancel</button><button class="shutter" id="capture-button" type="button" aria-label="Capture photo"></button><span class="sub" style="color:var(--muted);font-size:13px">Keep the item centred</span></div>
+    <canvas id="capture-canvas" hidden></canvas>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='app.js') }}"></script>{% endblock %}

@@ -1,0 +1,33 @@
+{% from "_icons.html" import icon %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#1f9d63">
+  <title>Sign in · EcoSort AI</title>
+  <script>(function(){try{var t=localStorage.getItem("ecosort-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}catch(e){}})();</script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="orbs"><i></i><i></i><i></i></div>
+  <main class="auth">
+    <div class="auth-card glass">
+      <section class="auth-brand">
+        <div class="brand"><span class="brand-mark">{{ icon('leaf', 22) }}</span><span><strong>EcoSort AI</strong></span></div>
+        <div><span class="eyebrow">AI waste assistant</span><h1>Sort smarter.<br>Recycle better.</h1><p>Trained YOLO recognition, German bin rules and an AI assistant, in one protected app.</p></div>
+      </section>
+      <form class="auth-form" method="post" action="{{ url_for('login') }}">
+        <h2>Welcome back</h2><p>Sign in to continue.</p>
+        {% if error %}<div class="alert bad" role="alert">{{ error }}</div>{% endif %}
+        {% if request.args.get('registered') %}<div class="alert good">Account created. You can sign in now.</div>{% endif %}
+        <label class="field">Sign in as<select name="role"><option value="admin">Administrator</option><option value="municipality">Municipality worker</option><option value="user" selected>Normal user</option></select></label>
+        <label class="field">Username<input name="username" autocomplete="username" required autofocus></label>
+        <label class="field">Password<input name="password" type="password" autocomplete="current-password" required></label>
+        <button class="btn btn-primary" type="submit">Sign in →</button>
+        <a class="link" href="{{ url_for('signup') }}">Create an account</a>
+        <p class="tiny">{{ icon('lock', 12) }} Access is password protected.</p>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

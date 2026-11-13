@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% set page_title = "Scan history" %}
+{% set page_sub = "Every photo you analysed, with prediction, bin and answer source." %}
+
+{% block content %}
+<section class="card glass">
+  <div class="card-head"><div><h2>Recent scans</h2><p class="sub">{{ scans|length }} stored scan{{ '' if scans|length == 1 else 's' }}</p></div>
+    <div class="actions" style="margin:0">
+      <label class="search">{{ icon('search', 18) }}<input id="history-search" type="search" placeholder="Search label, bin, user…" aria-label="Search scans"></label>
+      <a class="btn btn-primary" href="{{ url_for('export_csv') }}">{{ icon('download', 16) }} CSV</a></div></div>
+  {% if scans %}
+  <div class="history-grid" id="history-grid">
+    {% for scan in scans %}
+    {% set pct = ((scan.model_confidence or 0) * 100)|round(0)|int %}
+    <article class="scan glass" data-search="{{ [scan.model_label, scan.predicted_bin, scan.prediction_source, scan.username, scan.city]|select|join(' ')|lower }}">
+      <a class="thumb" href="{{ url_for('photo', name=scan.image_path.split('/')[-1]) }}" target="_blank" rel="noopener">
+        <img src="{{ url_for('photo', name=scan.image_path.split('/')[-1]) }}" alt="Scanned waste photo" loading="lazy">
+        <span class="conf">{{ pct }}%</span></a>
+      <div class="info">
+        <strong>{{ (scan.model_label or 'No detection')|replace('_', ' ') }}</strong>
+        <small>{{ scan.predicted_bin|replace('_', ' ') if scan.predicted_bin else 'Unknown bin' }}</small>
+        <div class="tags"><span class="badge {{ 'ai' if scan.llm_used else '' }}">{{ 'Ask AI' if scan.llm_used else 'Local model' }}</span><span class="badge">{{ scan.city }}</span></div>
+        <small>{{ scan.created_at.replace('T', ' ')[:16] }} · {{ scan.username or 'unknown' }}</small>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  <p class="empty" id="history-empty" hidden>No scans match your search.</p>
+  {% else %}<p class="empty">No scans have been stored yet. Analyse a photo on the Assistant page to create the first record.</p>{% endif %}
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  /* Client-side search: hide cards whose text does not contain the query. */
+  const box = document.getElementById("history-search");
+  if (box) box.addEventListener("input", () => {
+    const q = box.value.trim().toLowerCase();
+    let shown = 0;
+    document.querySelectorAll("#history-grid .scan").forEach((card) => {
+      const match = card.dataset.search.includes(q);
+      card.hidden = !match; if (match) shown++;
+    });
+    document.getElementById("history-empty").hidden = shown > 0;
+  });
+</script>
+{% endblock %}

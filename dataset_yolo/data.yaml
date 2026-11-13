@@ -1,0 +1,14 @@
+# path is resolved relative to this file (the original absolute Windows path was removed)
+# path: .
+train: images/train
+val: images/val
+test: images/test
+nc: 7
+names:
+  0: Biomuell
+  1: Glass
+  2: Metal
+  3: Papier
+  4: Plastic
+  5: Sondermuell
+  6: Textile_Trash

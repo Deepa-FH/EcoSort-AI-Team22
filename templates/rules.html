@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% set page_title = "Waste rules" %}
+{% set page_sub = "Administrator editor for the local guidance used by the assistant and AI prompts." %}
+
+{% block content %}
+<section class="rules-grid">
+  {% for label, rule in rules.items() %}
+  <form class="card glass rule-card" data-label="{{ label }}" style="--bin: {{ rule.hex }}">
+    <header><div class="bin"><i class="lid"></i><i class="body"></i></div><div><h2>{{ label|replace('_', ' ') }}</h2><p class="sub">Model class: {{ label }}</p></div></header>
+    <label class="field">Category<input name="category" value="{{ rule.category }}" required></label>
+    <label class="field">Bin<input name="bin" value="{{ rule.bin }}" required></label>
+    <label class="field">German name<input name="bin_de" value="{{ rule.bin_de }}" required></label>
+    <label class="field">Colour name<input name="color" value="{{ rule.color }}" required></label>
+    <label class="field">Colour (hex)<input name="hex" value="{{ rule.hex }}" pattern="#[0-9A-Fa-f]{6}" required></label>
+    <label class="field">Guidance<textarea name="note" rows="3" required>{{ rule.note }}</textarea></label>
+    <input type="hidden" name="theme" value="{{ rule.theme }}"><input type="hidden" name="symbol" value="{{ rule.symbol }}">
+    <button class="btn btn-primary" type="submit">Save rule</button>
+    <small class="status-msg" role="status"></small>
+  </form>
+  {% endfor %}
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  /* Save one rule through the JSON API and show the result under the button. */
+  document.querySelectorAll(".rule-card").forEach((form) => form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const status = form.querySelector(".status-msg");
+    const data = Object.fromEntries(new FormData(form));
+    data.label = form.dataset.label;
+    try {
+      const res = await fetch("/api/admin/rules", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      const out = await res.json();
+      status.className = "status-msg " + (res.ok ? "ok" : "bad");
+      status.textContent = res.ok ? "Saved ✓" : (out.error || "Unable to save");
+      if (res.ok) form.style.setProperty("--bin", data.hex);
+    } catch (e) { status.className = "status-msg bad"; status.textContent = "Network error"; }
+  }));
+</script>
+{% endblock %}
