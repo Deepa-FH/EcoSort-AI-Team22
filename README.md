@@ -28,7 +28,7 @@ The ready-made image is on Docker Hub: **`prasadhule001/ecosort-ai`**. No Python
 | Step | What to do | Command |
 |:-:|---|---|
 | 1 | Open a terminal (Windows: **PowerShell**; macOS/Linux: **Terminal**) | |
-| 2 | Download the image (about 0.6 GB, once) | `docker pull prasadhule001/ecosort-ai:1.1` |Mac [Apple Silicon] `docker pull --platform linux/amd64 prasadhule001/ecosort-ai:1.1` |
+| 2 | Download the image (about 0.6 GB, once) | `docker pull prasadhule001/ecosort-ai:1.1` or Mac [Apple Silicon] `docker pull --platform linux/amd64 prasadhule001/ecosort-ai:1.1` |
 | 3 | Start it and **pass your API key** | see below |
 | 4 | Open the app in your browser | <http://localhost:5000(port)> |
 | 5 | Sign in | **Sign in as: Administrator** · username `admin` · password `admin` |
