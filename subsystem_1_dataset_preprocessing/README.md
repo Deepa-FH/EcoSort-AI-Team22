@@ -55,7 +55,7 @@ DatasetManager ..> DatasetRecord
 DatasetManager ..> DatasetStatistics
 ```
 
-## Data storage (PPT)
+## Data storage
 Image folders; the **CSV manifest** (`DatasetManager.export_manifest`) stores label, source, split and SHA-256 checksum per image. Sample data: `../sample_data/` (18 labelled images; label = second part of the file name `source__Label__name.jpg`).
 
 ## Requirements covered
@@ -67,7 +67,3 @@ Validate type/readability · resize · normalise (`to_normalized_array`) · spli
 python -m subsystem_1_dataset_preprocessing.demo      # live demo (no key, no model)
 python -m pytest tests/test_subsystem_1_dataset.py -v # 13 tests
 ```
-
-## Debugging tips
-* Photo rejected? Read the server log line `[dataset_preprocessing] CODE: detail` - the `detail` is the technical reason.
-* `UNSUPPORTED_IMAGE` = not JPEG/PNG/WebP; `IMAGE_TOO_SMALL` = side < 80 px.
