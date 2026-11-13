@@ -1,6 +1,6 @@
 # Subsystem 2 - AI Image Recognition
 
-**Owner: Prasad Hule (7225861)** · Goal from the PPT: *classify waste images and expose confidence and evaluation results.*
+**Owner: Prasad Hule (7225861)** · 
 
 ## What runs in the real app
 
@@ -44,7 +44,7 @@ PredictionResult o-- Detection
 WasteDetector ..> DetectionStream
 ```
 
-## Data storage (PPT)
+## Data storage 
 The model artifact lives in `models/best_model.pt` (`ModelLoader.version_of` shows name + size). Every prediction is saved by Subsystem 4 in the SQLite `scans` table (label, confidence, timestamp, image path).
 
 ## Requirements covered
