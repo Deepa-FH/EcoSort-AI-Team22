@@ -13,7 +13,7 @@ Upload or photograph a waste item → a trained **YOLO** model recognises it →
 | **Mayuresh Kumbhar** | 7226310 | 3 · Recycling Rules & Ask AI | [`subsystem_3_recycling_ai/`](subsystem_3_recycling_ai/README.md) |
 | **Vijay Kathiresan** | 7226794 | 4 · Web App, Dashboard & Integration | [`subsystem_4_web_integration/`](subsystem_4_web_integration/README.md) |
 
-Each subsystem folder has its own README with the classes, UML diagram, data storage, covered requirements, a live demo command and debugging tips. Presenters: see [`PRESENTATION_GUIDE.md`](PRESENTATION_GUIDE.md).
+Each subsystem folder has its own README with the classes, UML diagram, data storage, covered requirements and a live demo command.
 
 ---
 
@@ -62,7 +62,7 @@ pip install -r requirements.txt
 python main.py --api-key YOUR_API_KEY
 ```
 
-The browser opens at <http://127.0.0.1:5000>. **Sign in with `admin` / `admin`** (demo account) and choose **Sign in as: Administrator** on the login form.
+The browser opens at <http://127.0.0.1:5000> OR <http://127.0.0.1:your_port>. **Sign in with `admin` / `admin`** (demo account) and choose **Sign in as: Administrator** on the login form.
 
 Where does the API key go? Either of these - never into the source code:
 
