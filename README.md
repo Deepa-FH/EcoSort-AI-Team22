@@ -28,9 +28,9 @@ The ready-made image is on Docker Hub: **`prasadhule001/ecosort-ai`**. No Python
 | Step | What to do | Command |
 |:-:|---|---|
 | 1 | Open a terminal (Windows: **PowerShell**; macOS/Linux: **Terminal**) | |
-| 2 | Download the image (about 0.6 GB, once) | `docker pull prasadhule001/ecosort-ai:1.1` |
+| 2 | Download the image (about 0.6 GB, once) | `docker pull prasadhule001/ecosort-ai:1.1` |Mac [Apple Silicon] `docker pull --platform linux/amd64 prasadhule001/ecosort-ai:1.1` |
 | 3 | Start it and **pass your API key** | see below |
-| 4 | Open the app in your browser | <http://localhost:5000> |
+| 4 | Open the app in your browser | <http://localhost:5000(port)> |
 | 5 | Sign in | **Sign in as: Administrator** · username `admin` · password `admin` |
 | 6 | Stop the app | press `Ctrl + C` in the terminal |
 
@@ -39,6 +39,7 @@ The ready-made image is on Docker Hub: **`prasadhule001/ecosort-ai`**. No Python
 ```powershell
 # Windows PowerShell / macOS / Linux - the key is passed with  -e LLM_API_KEY=...
 docker run --rm -p 5000:5000 -e LLM_API_KEY="YOUR_API_KEY" prasadhule001/ecosort-ai:1.1
+
 ```
 
 Alternative - pass the key as a program argument (same result):
@@ -62,7 +63,7 @@ pip install -r requirements.txt
 python main.py --api-key YOUR_API_KEY
 ```
 
-The browser opens at <http://127.0.0.1:5000> OR <http://127.0.0.1:your_port>. **Sign in with `admin` / `admin`** (demo account) and choose **Sign in as: Administrator** on the login form.
+The browser opens at <http://127.0.0.1:5000(your_port)>. **Sign in with `admin` / `admin`** (demo account) and choose **Sign in as: Administrator** on the login form.
 
 Where does the API key go? Either of these - never into the source code:
 
