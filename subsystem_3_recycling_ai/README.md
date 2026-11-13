@@ -1,6 +1,6 @@
 # Subsystem 3 - Recycling Rules & Ask AI
 
-**Owner: Mayuresh Kumbhar (7226310)** · Goal from the PPT: *translate predicted categories into disposal guidance; rule-based baseline, LLM optional.*
+**Owner: Mayuresh Kumbhar (7226310)** · Goal: *translate predicted categories into disposal guidance.*
 
 ## What runs in the real app
 
@@ -48,15 +48,11 @@ RuleStore <|.. InMemoryRuleStore
 RuleStore <|.. WasteRepository : Subsystem 4
 RecyclingRuleEngine ..> RecyclingRule
 ```
-
-## Data storage (PPT)
-SQLite table `rules` (label, category, bin, bin_de, colour, hex, note, `updated_at`) - owned by Subsystem 4's repository, edited through this subsystem's engine. The seed values are in `default_rules.py`.
-
 ## Which LLM?
 Default: **Qwen3.8 27B** on KIconnect NRW. We compared the models on sample photos: Qwen identified them correctly; Mistral Small 4 saw the images but misidentified two of three; GPT-OSS-120B cannot see images. Change with `--llm-model` / `LLM_MODEL`.
 
 ## API key (important)
-The key is **never** in source code. It comes from `--api-key` or the `LLM_API_KEY` environment variable, and is never printed (`repr(client)` shows `api_key='set'`). Without a key the app still sorts waste with local rules ("Keep paid LLM optional").
+The key comes from `--api-key` or the `LLM_API_KEY` environment variable, and is never printed (`repr(client)` shows `api_key='set'`). Without a key the app still sorts waste with local rules.
 
 ## Requirements covered
 Category → guidance · preparation text · bin recommendation · configurable rules · explain why · answer disposal questions (LLM) · update rules without code · warn when unknown (fallback text) · distinguish AI text from rules (`source` badge) · protect API keys · LLM optional.
@@ -68,7 +64,3 @@ python -m subsystem_3_recycling_ai.demo                 # local fallback
 python -m subsystem_3_recycling_ai.demo --api-key KEY   # real LLM answer
 python -m pytest tests/test_subsystem_3_recycling_ai.py -v   # 11 tests
 ```
-
-## Debugging tips
-* Server log shows `[recycling_ai] LLM_UNAVAILABLE: <real reason>` (401 = wrong key, DNS/timeout = no internet, 404 = wrong `--llm-model`).
-* Wrong bin shown after an admin edit? Check `GET /admin/rules` - the engine reads the DB on every call.
