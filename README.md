@@ -179,6 +179,3 @@ Choose **Sign in as** on the login form (the choice must match the account's rol
 | Edit waste rules | - | - | yes |
 | "Go live" public tunnel (local Python only) | - | - | yes |
 
-## 8 · Team video
-
-Add the presentation video link here before submission: **[Team presentation video](PASTE_VIDEO_LINK_HERE)**
